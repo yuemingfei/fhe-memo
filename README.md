@@ -16,7 +16,7 @@ on encrypted data without ever decrypting it.
   data privacy.
 - **Access Control**: Only the owner of the memo can request decryption via the FHEVM relayer.
 
-## Smart Contract Details
+## Smart Contract 
 
 The main contract is `FHEMemo.sol`, which leverages `fhevm` to handle encrypted `euint256` data types.
 
@@ -61,7 +61,7 @@ npx hardhat test
 
 ## Security
 
-This project uses the `fhevm` library by Zama. Security is maintained through:
+This project uses the `fhevm` library. Security is maintained through:
 
 1. Client-side encryption of data before sending to the blockchain.
 2. Homomorphic operations within the EVM.
