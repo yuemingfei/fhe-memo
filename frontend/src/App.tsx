@@ -224,6 +224,45 @@ const App: React.FC = () => {
   const [isNewMemo, setIsNewMemo] = useState(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
 
+  useEffect(() => {
+    const handleAccountsChanged = (accounts: string[]) => {
+      if (accounts.length === 0) {
+        handleLogout();
+      } else {
+        setAddress(accounts[0]);
+        // Re-init provider and signer
+        const provider = new BrowserProvider((window as any).ethereum);
+        provider.getSigner().then((s) => {
+          setSigner(s);
+          fetchMemos(s);
+        });
+      }
+    };
+
+    const handleChainChanged = () => {
+      window.location.reload();
+    };
+
+    if ((window as any).ethereum) {
+      // Check if already connected
+      (window as any).ethereum.request({ method: "eth_accounts" }).then((accounts: string[]) => {
+        if (accounts.length > 0) {
+          connectWallet();
+        }
+      });
+
+      (window as any).ethereum.on("accountsChanged", handleAccountsChanged);
+      (window as any).ethereum.on("chainChanged", handleChainChanged);
+    }
+
+    return () => {
+      if ((window as any).ethereum) {
+        (window as any).ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        (window as any).ethereum.removeListener("chainChanged", handleChainChanged);
+      }
+    };
+  }, []);
+
   const ensureSepoliaNetwork = async () => {
     if ((window as any).ethereum) {
       const chainId = await (window as any).ethereum.request({ method: "eth_chainId" });
@@ -270,16 +309,28 @@ const App: React.FC = () => {
 
   const connectWallet = async () => {
     if ((window as any).ethereum) {
-      const isCorrect = await ensureSepoliaNetwork();
-      if (!isCorrect) return;
+      try {
+        setLoading(true);
+        // Explicitly request accounts
+        await (window as any).ethereum.request({ method: "eth_requestAccounts" });
 
-      const provider = new BrowserProvider((window as any).ethereum);
-      const s = await provider.getSigner();
-      const network = await provider.getNetwork();
-      console.log("network: ", network);
-      setSigner(s);
-      setAddress(await s.getAddress());
-      fetchMemos(s);
+        const isCorrect = await ensureSepoliaNetwork();
+        // Even if network is wrong, we want to set the address if we have accounts
+        const provider = new BrowserProvider((window as any).ethereum);
+        const s = await provider.getSigner();
+        const addr = await s.getAddress();
+
+        setAddress(addr);
+        setSigner(s);
+
+        if (isCorrect) {
+          fetchMemos(s);
+        }
+      } catch (err) {
+        console.error("User denied account access or error occurred:", err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
