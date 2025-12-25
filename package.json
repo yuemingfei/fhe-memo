@@ -1,6 +1,6 @@
 {
   "name": "fhe-memo",
-  "description": "Based on zama FHE, encrypted memo web3 applicaiton",
+  "description": "Based on FHE technology, encrypted memo web3 applicaiton",
   "version": "0.1.0",
   "engines": {
     "node": ">=20",
