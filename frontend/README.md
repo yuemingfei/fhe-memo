@@ -6,7 +6,7 @@ Tailwind CSS.
 ## Features
 
 - **Wallet Integration**: Securely connect with MetaMask on the Sepolia Testnet.
-- **FHE-Powered Privacy**: Uses Zama's `fhevmjs` to encrypt data locally before submission and decrypt it securely for
+- **FHE-Powered Privacy**: Uses `fhevmjs` to encrypt data locally before submission and decrypt it securely for
   viewing.
 - **Dynamic UI**:
   - Auto-switching to the correct network (Sepolia).
@@ -23,7 +23,7 @@ Tailwind CSS.
 - **Icons**: Lucide React
 - **Build Tool**: Webpack
 - **Blockchain Interface**: Ethers.js v6
-- **FHE Library**: `fhevmjs` (by Zama)
+- **FHE Library**: `fhevmjs`
 
 ## Getting Started
 
@@ -66,7 +66,7 @@ npm run build
 1. **Connect**: Link your Ethereum wallet.
 2. **Encrypt**: When you write a memo, the frontend generates an encrypted input using FHEVM.
 3. **Store**: The encrypted payload is sent to the `FHEMemo` contract.
-4. **Decrypt**: When viewing, the app requests a re-encryption via the Zama relayer and decrypts the result locally
+4. **Decrypt**: When viewing, the app requests a re-encryption via the relayer and decrypts the result locally
    using your private key.
 
 ## License
