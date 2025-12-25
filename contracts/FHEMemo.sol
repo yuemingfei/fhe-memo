@@ -5,7 +5,6 @@ import {FHE, euint256, externalEuint256} from "@fhevm/solidity/lib/FHE.sol";
 import {ZamaEthereumConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 
 /// @title FHE Memo Contract
-/// @notice 这是一个使用 Zama FHEVM 技术实现的加密备忘录合约。
 /// @dev 每个 Memo 使用 single euint256 存储加密内容（32 字节/字符）。
 contract FHEMemo is ZamaEthereumConfig {
     struct Memo {
